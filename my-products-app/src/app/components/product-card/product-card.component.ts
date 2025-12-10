@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Product } from '../../models/product.model';
 
 @Component({
   selector: 'app-product-card',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './product-card.component.css'
 })
 export class ProductCardComponent {
+  @Input() product!: Product;
+  @Output() delete = new EventEmitter<string>();
 
+  onDelete() {
+    this.delete.emit(this.product.id);
+  }
 }
