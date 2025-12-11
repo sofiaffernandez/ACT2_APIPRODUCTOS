@@ -6,7 +6,7 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ProductFormComponent, ProductsListComponent, ProductCardComponent],
+  imports: [ ProductFormComponent, ProductsListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

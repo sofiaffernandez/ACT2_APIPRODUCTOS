@@ -1,1 +1,25 @@
-<p>products-list works!</p>
+<div class="container my-3">
+  <h2 class="mb-3">Productos</h2>
+
+  <div *ngIf="loading" class="alert alert-info">Cargando...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="!loading && products.length === 0" class="alert alert-secondary">
+    No hay productos.
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let p of products">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ p.name }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ p.category || 'Sin categoría' }}</h6>
+          <p class="card-text">Precio: {{ p.price  }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+          <button class="btn btn-sm btn-danger" (click)="remove(p.id)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
