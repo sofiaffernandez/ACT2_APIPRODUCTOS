@@ -1,1 +1,39 @@
-<p>product-form works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()" class="card p-3 mb-3">
+  <div class="row g-2">
+    <div class="col-md-5">
+      <label class="form-label">Nombre</label>
+      <input class="form-control" formControlName="name" />
+      <div *ngIf="form.controls['name'].touched && form.controls['name'].invalid" class="text-danger small">
+        Nombre requerido (min 2)
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Categoría</label>
+      <input class="form-control" formControlName="category" />
+      <div *ngIf="form.controls['category'].touched && form.controls['category'].invalid" class="text-danger small">
+        Categoría requerida (min 4)
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Precio</label>
+      <input type="number" class="form-control" formControlName="price" /> 
+      <div *ngIf="form.controls['price'].touched && form.controls['price'].invalid" class="text-danger small">
+        Precio requerido
+      </div>
+    </div>
+  </div>
+
+  <div class="form-check form-switch my-2">
+    <input class="form-check-input" type="checkbox" id="activeSwitch" formControlName="active" />
+    <label class="form-check-label" for="activeSwitch">Activo</label>
+  </div>
+
+  <div class="d-flex gap-2 justify-content-end">
+    <button type="button" class="btn btn-outline-secondary" (click)="form.reset({ active: true })" [disabled]="saving">Limpiar</button>
+    <button class="btn btn-success" type="submit" [disabled]="saving">Crear</button>
+  </div>
+
+  <div *ngIf="message" class="mt-2 alert alert-success p-2">{{ message }}</div>
+</form>

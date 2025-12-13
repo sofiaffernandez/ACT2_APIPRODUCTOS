@@ -1,4 +1,4 @@
-<header class="bg-primary text-white p-3">
+<header class="bg-dark text-white p-3">
   <div class="container">
     <h1>Mis productos</h1>
   </div>
@@ -6,7 +6,8 @@
 
 <main class="container my-4">
   <app-product-form></app-product-form>
-  <app-products-list></app-products-list>
+  <app-product-filter (filter)="productsList.onFilter($event)"></app-product-filter>
+  <app-products-list #productsList></app-products-list>
 </main>
 
 <footer class="bg-light text-center py-3">

@@ -14,10 +14,12 @@
         <div class="card-body">
           <h5 class="card-title">{{ p.name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">{{ p.category || 'Sin categoría' }}</h6>
-          <p class="card-text">Precio: {{ p.price  }}</p>
+          <p class="card-text">{{ p.price }} €</p>
         </div>
         <div class="card-footer d-flex justify-content-end">
-          <button class="btn btn-sm btn-danger" (click)="remove(p.id)">Eliminar</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="remove(p.id)" title="Eliminar">
+            <i class="bi bi-trash" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
     </div>

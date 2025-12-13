@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-
   private apiUrl = 'https://api.jsonblob.com/019b0f3a-ba30-7297-bb14-bed467f7fc00';
 
   private productsSubject = new BehaviorSubject<Product[]>([]);
@@ -16,19 +15,45 @@ export class ProductService {
   }
 
   private async loadFromServer() {
-    const res = await fetch(this.apiUrl);
-    const data = await res.json();
-
-    this.productsSubject.next(data || []);
+    try {
+      const res = await fetch(this.apiUrl);
+      if (!res.ok) {
+        console.error('loadFromServer failed', res.status);
+        return;
+      }
+      const data = await res.json();
+      const raw = Array.isArray(data) ? data : Array.isArray((data as any).items) ? (data as any).items : [];
+      const normalized: Product[] = raw.map((p: any) => ({
+        id: p.id ?? uuidv4(),
+        name: p.name ?? '',
+        category: p.category ?? '',
+        price: p.price != null ? Number(p.price) : 0,
+        active: p.active != null ? !!p.active : true,
+        ...p
+      }));
+      this.productsSubject.next(normalized);
+    } catch (err) {
+      console.error('loadFromServer error', err);
+    }
   }
 
   private async saveToServer(products: Product[]) {
-    await fetch(this.apiUrl, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(products)
-    });
-    this.productsSubject.next([...products]);
+    try {
+      const res = await fetch(this.apiUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(products)
+      });
+      if (!res.ok) {
+        throw new Error(`saveToServer failed: ${res.status}`);
+      }
+      // solo actualizar si el servidor aceptó la modificación
+      this.productsSubject.next([...products]);
+      return true;
+    } catch (err) {
+      console.error('saveToServer error', err);
+      throw err;
+    }
   }
 
   getAll(): Observable<Product[]> {
